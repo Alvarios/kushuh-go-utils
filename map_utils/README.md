@@ -37,7 +37,7 @@ replacement2 := map[string]interface{}{
 import "github.com/Alvarios/kushuh-go-utils/map_utils"
 
 // Add as many replacement objects as you want.
-newMap := map_utils.merge(original, replacement1, replacement2)
+newMap := map_utils.Merge(original, replacement1, replacement2)
 ```
 
 Will result in:
