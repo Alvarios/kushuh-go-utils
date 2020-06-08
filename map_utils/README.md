@@ -7,28 +7,28 @@ Merge multiple `map[string]interface{}` objects together.
 *Variables*
 ```go
 original := map[string]interface{}{
-    "key1": "original value",
+    "key1": "value1",
     "key2": map[string]interface{}{
-        "key2-1": 10,
-        "key2-2": true
+        "key21": 10,
+        "key22": true,
     },
     "key3": map[string]interface{}{
         "key3-1": map[string]interface{}{
-            "ultra-nested": []string{}
-        }
-        "key3-2": false,
+            "ultra-nested": []string{},
+        },
+        "key32": false,
     },
 }
 
 replacement1 := map[string]interface{}{
-    "key2": "Maliwan",
+    "key2": "value2",
     "key3": map[string]interface{}{
-        "key3-2": 11,
+        "key32": 11,
     },
 }
 
 replacement2 := map[string]interface{}{
-    "key4": "a new key",
+    "key4": "value4",
 }
 ```
 
@@ -37,22 +37,22 @@ replacement2 := map[string]interface{}{
 import "github.com/Alvarios/kushuh-go-utils/map_utils"
 
 // Add as many replacement objects as you want.
-newMap := map_utils.Merge(original, replacement1, replacement2)
+newMap, err := map_utils.Merge(original, replacement1, replacement2)
 ```
 
 Will result in:
 
 ```go
 map[string]interface{}{
-    "key1": "original value",
-    "key2": "Maliwan",
+    "key1": "value1",
+    "key2": "value2",
     "key3": map[string]interface{}{
-        "key3-1": map[string]interface{}{
-            "ultra-nested": []string{}
+        "key31": map[string]interface{}{
+            "ultra-nested": []string{},
         }
-        "key3-2": 11,
+        "key32": 11,
     },
-    "key4": "a new key",
+    "key4": "value4",
 }
 ```
 
