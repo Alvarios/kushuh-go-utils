@@ -2,6 +2,6 @@ package numberUtils
 
 import "time"
 
-func Timestamp() int64 {
-	return time.Now().UnixNano() / int64(time.Millisecond)
+func Timestamp() uint64 {
+	return uint64(time.Now().UnixNano() / int64(time.Millisecond))
 }
