@@ -1,4 +1,4 @@
-# Kushuh go map utils
+# Kushuh go number utils
 
 ## Timestamp
 
