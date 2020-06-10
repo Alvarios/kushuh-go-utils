@@ -1,4 +1,4 @@
-package map_utils
+package mapUtils
 
 import (
 	"fmt"

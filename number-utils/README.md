@@ -5,7 +5,7 @@
 Generate a timestamp in javascript format (milliseconds).
 
 ```go
-timestamp := number_utils.Timestamp()
+timestamp := numberUtils.Timestamp()
 ```
 
 ## Copyright

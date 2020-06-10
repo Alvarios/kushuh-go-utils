@@ -9,7 +9,7 @@ It ensures a file opens from project root with go modules, without having to pas
 it as an ENV variable (like GOPATH does in non module go packages).
 
 ```go
-file, err := file_utils.OpenFromProjectRoot(rootFolderName, relativePath)
+file, err := fileUtils.OpenFromProjectRoot(rootFolderName, relativePath)
 ```
 
 ## FindProjectRoot
