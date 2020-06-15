@@ -9,6 +9,10 @@ import (
 func Flatten(params map[string]interface{}, parentKey string) map[string]interface{} {
 	output := map[string]interface{}{}
 
+	if params == nil {
+		return output
+	}
+
 	for key, value := range params {
 		// Point to a specific key in the document.
 		fKey := fmt.Sprintf("%s%s", parentKey, key)
