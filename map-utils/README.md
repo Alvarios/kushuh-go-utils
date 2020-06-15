@@ -56,5 +56,37 @@ map[string]interface{}{
 }
 ```
 
+### Flatten
+
+Extract each nested key of a map at top level.
+
+```go
+value := map[string]interface{}{
+    "key1": "value1",
+    "key2": "value2",
+    "key3": map[string]interface{}{
+        "key31": map[string]interface{}{
+            "ultra-nested": []string{},
+        }
+        "key32": 11,
+    },
+    "key4": "value4",
+}
+
+flattened := mapUtils.Flatten(value)
+```
+
+Will result in:
+
+```go
+map[string]interface{}{
+    "key1": "value1",
+    "key2": "value2",
+    "key3.key31.ultra-nested": []string{},
+    "key3.key32": 11,
+    "key4": "value4",
+}
+```
+
 ## Copyright
 2020 Kushuh - [MIT license](https://github.com/Alvarios/kushuh-go-utils/blob/master/LICENSE)
