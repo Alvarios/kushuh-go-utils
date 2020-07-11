@@ -2,11 +2,12 @@
 
 ## OpenFromProjectRoot
 
-Open a file relative to project root. Especially useful when working with
-complex project trees, where commands such as tests can run from a sub-directory.
+Open a file relative to project root, when a command is ran from a sub-directory
+(which happens with tests and some other commands).
 
 It ensures a file opens from project root with go modules, without having to pass
-it as an ENV variable (like GOPATH does in non module go packages).
+it as an ENV variable (like GOPATH does in non module go packages). It assumes
+the project folder has an unique name in the entire project tree.
 
 ```go
 file, err := fileUtils.OpenFromProjectRoot(rootFolderName, relativePath)
@@ -14,8 +15,8 @@ file, err := fileUtils.OpenFromProjectRoot(rootFolderName, relativePath)
 
 ## FindProjectRoot
 
-Returns the absolute path for the root of a project. It assumes naming
-conventions, such as only the root folder is named after the project name.
+Returns the absolute path for the root of a project. It assumes
+the project folder has an unique name in the entire project tree.
 
 ```go
 path, err := file_utils.FindProjectRoot(rootFolderName)
