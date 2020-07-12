@@ -13,13 +13,15 @@ func FindProjectRoot(rootName string) (string, error) {
 		return "", err
 	}
 
-	elems, i := strings.Split(dir, "/"), 0
-	for elems[i] != rootName && i < (len(elems) - 1) {
-		i++
+	elems := strings.Split(dir, "/")
+	i := len(elems) - 1
+
+	for i >= 0 && elems[i] != rootName {
+		i--
 	}
 
-	if i == len(elems) - 1 && elems[i] != rootName {
-		return "", errors.New(fmt.Sprintf("Root not found : cannot find folder %s in current dir %s", rootName, dir))
+	if i < 0 {
+		return "", errors.New(fmt.Sprintf("root not found, cannot find folder %s in current dir %s", rootName, dir))
 	}
 
 	return strings.Join(elems[:i + 1], "/"), nil

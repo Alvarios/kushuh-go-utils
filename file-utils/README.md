@@ -1,5 +1,22 @@
 # Kushuh go file utils
 
+## Upsert
+
+Opens a file, and create it if it doesn't exist already. If path is incomplete
+(intermediate folders are missing), they will also be created automatically.
+
+```go
+file, err := fileUtils.Upsert(pathToFile)
+```
+
+## Delete
+
+Delete a file.
+
+```go
+err := fileUtils.Delete(pathToFile)
+```
+
 ## OpenFromProjectRoot
 
 Open a file relative to project root, when a command is ran from a sub-directory

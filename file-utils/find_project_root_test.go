@@ -19,7 +19,7 @@ func TestFindProjectRoot(t *testing.T) {
 	path, err = FindProjectRoot("kushuh-go")
 	if err == nil {
 		t.Error("No error when providing non existing root name.")
-	} else if !strings.HasPrefix(err.Error(), "Root not found") {
+	} else if !strings.HasPrefix(err.Error(), "root not found") {
 		t.Errorf("Unexpected error : %s", err.Error())
 	}
 }
