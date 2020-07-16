@@ -4,22 +4,39 @@ import (
 	"fmt"
 	"github.com/Alvarios/kushuh-go-utils/ext-apis/slack"
 	"log"
+	"time"
 )
 
-func Error(u string, s string) {
-	_, _ = slack.Send(u, s)
+type ServerConfig struct {
+	Webhook string
+	Application string
+	Environment string
 }
 
-func Errorf(u string, s string, par ...interface{}) {
-	_, _ = slack.Send(u, fmt.Sprintf(s, par...))
+func (s *ServerConfig) Print(t string) string {
+	return fmt.Sprintf(
+		"*%s*\n>_in %s_\n>*Environment*\n>%s\n>*Noticed*\n>%s",
+		t,
+		s.Application,
+		s.Environment,
+		time.Now().Format("2006-01-02 3:4:5"),
+	)
 }
 
-func Fatal(u string, s string) {
-	_, _ = slack.Send(u, s)
-	log.Fatal(s)
+func (s *ServerConfig) Error(t string) {
+	_, _ = slack.Send(s.Webhook, s.Print(t))
 }
 
-func Fatalf(u string, s string, par ...interface{}) {
-	_, _ = slack.Send(u, fmt.Sprintf(s, par...))
-	log.Fatalf(s, par...)
+func (s *ServerConfig) Errorf(t string, par ...interface{}) {
+	_, _ = slack.Send(s.Webhook, s.Print(fmt.Sprintf(t, par...)))
+}
+
+func (s *ServerConfig) Fatal(t string) {
+	_, _ = slack.Send(s.Webhook, s.Print(t))
+	log.Fatal(t)
+}
+
+func (s *ServerConfig) Fatalf(t string, par ...interface{}) {
+	_, _ = slack.Send(s.Webhook, s.Print(fmt.Sprintf(t, par...)))
+	log.Fatalf(t, par...)
 }
