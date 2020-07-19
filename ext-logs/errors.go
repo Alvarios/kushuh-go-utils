@@ -15,8 +15,7 @@ type ServerConfig struct {
 
 func (s *ServerConfig) Print() string {
 	return fmt.Sprintf(
-		"_in %s_\n*Environment*\n%s\n*Noticed*\n%s",
-		s.Application,
+		"*Environment*\n%s\n*Noticed*\n%s",
 		s.Environment,
 		time.Now().Format("2006-01-02 3:4:5"),
 	)
@@ -25,7 +24,7 @@ func (s *ServerConfig) Print() string {
 func (s *ServerConfig) Error(t string) {
 	_, _ = slack.Send(
 		s.Webhook,
-		"*Unexpected error.*",
+		fmt.Sprintf("*Unexpected error* on %s", s.Application),
 		nil,
 		[]map[string]interface{}{
 			{
@@ -42,7 +41,7 @@ func (s *ServerConfig) Error(t string) {
 func (s *ServerConfig) Errorf(t string, par ...interface{}) {
 	_, _ = slack.Send(
 		s.Webhook,
-		"*Unexpected error.*",
+		fmt.Sprintf("*Unexpected error* on %s", s.Application),
 		nil,
 		[]map[string]interface{}{
 			{
@@ -59,11 +58,11 @@ func (s *ServerConfig) Errorf(t string, par ...interface{}) {
 func (s *ServerConfig) Fatal(t string) {
 	_, _ = slack.Send(
 		s.Webhook,
-		"*Unexpected error.*",
+		fmt.Sprintf("*Crash* on %s", s.Application),
 		nil,
 		[]map[string]interface{}{
 			{
-				"fallback" : fmt.Sprintf("Unexpected error in %s (%s)", s.Application, s.Environment),
+				"fallback" : fmt.Sprintf("Critical error in %s (%s)", s.Application, s.Environment),
 				"color" : "#ff3232",
 				"author_name" : s.Application,
 				"title" : t,
@@ -78,11 +77,11 @@ func (s *ServerConfig) Fatal(t string) {
 func (s *ServerConfig) Fatalf(t string, par ...interface{}) {
 	_, _ = slack.Send(
 		s.Webhook,
-		"*Unexpected error.*",
+		fmt.Sprintf("*Crash* on %s", s.Application),
 		nil,
 		[]map[string]interface{}{
 			{
-				"fallback" : fmt.Sprintf("Unexpected error in %s (%s)", s.Application, s.Environment),
+				"fallback" : fmt.Sprintf("Critical error in %s (%s)", s.Application, s.Environment),
 				"color" : "#ff3232",
 				"author_name" : s.Application,
 				"title" : fmt.Sprintf(t, par...),
