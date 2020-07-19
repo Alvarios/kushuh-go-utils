@@ -15,7 +15,7 @@ type ServerConfig struct {
 
 func (s *ServerConfig) Print(f string, t string) string {
 	return fmt.Sprintf(
-		"%s\n*File*\n%s\n*Environment*\n%s\n*Noticed*\n%s",
+		"%s\n\n*File*\n%s\n\n*Environment*\n%s\n\n*Noticed*\n%s",
 		t,
 		f,
 		s.Environment,
