@@ -64,7 +64,7 @@ func (s *ServerConfig) Fatal(t string) {
 		[]map[string]interface{}{
 			{
 				"fallback" : fmt.Sprintf("Unexpected error in %s (%s)", s.Application, s.Environment),
-				"color" : "#FF9300",
+				"color" : "#ff3232",
 				"author_name" : s.Application,
 				"title" : t,
 				"text" : s.Print(),
@@ -83,7 +83,7 @@ func (s *ServerConfig) Fatalf(t string, par ...interface{}) {
 		[]map[string]interface{}{
 			{
 				"fallback" : fmt.Sprintf("Unexpected error in %s (%s)", s.Application, s.Environment),
-				"color" : "#FF9300",
+				"color" : "#ff3232",
 				"author_name" : s.Application,
 				"title" : fmt.Sprintf(t, par...),
 				"text" : s.Print(),
