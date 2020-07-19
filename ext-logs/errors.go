@@ -13,16 +13,17 @@ type ServerConfig struct {
 	Environment string
 }
 
-func (s *ServerConfig) Print(t string) string {
+func (s *ServerConfig) Print(f string, t string) string {
 	return fmt.Sprintf(
-		"%s\n*Environment*\n%s\n*Noticed*\n%s",
+		"%s\n*File\n%s\n*Environment*\n%s\n*Noticed*\n%s",
 		t,
+		f,
 		s.Environment,
 		time.Now().Format("2006-01-02 3:4:5"),
 	)
 }
 
-func (s *ServerConfig) Error(t string) {
+func (s *ServerConfig) Error(f string, t string) {
 	_, _ = slack.Send(
 		s.Webhook,
 		fmt.Sprintf("Unexpected error in %s", s.Application),
@@ -31,13 +32,13 @@ func (s *ServerConfig) Error(t string) {
 			{
 				"fallback" : fmt.Sprintf("Unexpected error in %s (%s)", s.Application, s.Environment),
 				"color" : "#FF9300",
-				"text" : s.Print(t),
+				"text" : s.Print(f, t),
 			},
 		},
 	)
 }
 
-func (s *ServerConfig) Errorf(t string, par ...interface{}) {
+func (s *ServerConfig) Errorf(f string, t string, par ...interface{}) {
 	_, _ = slack.Send(
 		s.Webhook,
 		fmt.Sprintf("Unexpected error in %s", s.Application),
@@ -46,13 +47,13 @@ func (s *ServerConfig) Errorf(t string, par ...interface{}) {
 			{
 				"fallback" : fmt.Sprintf("Unexpected error in %s (%s)", s.Application, s.Environment),
 				"color" : "#FF9300",
-				"text" : s.Print(fmt.Sprintf(t, par...)),
+				"text" : s.Print(f, fmt.Sprintf(t, par...)),
 			},
 		},
 	)
 }
 
-func (s *ServerConfig) Fatal(t string) {
+func (s *ServerConfig) Fatal(f string, t string) {
 	_, _ = slack.Send(
 		s.Webhook,
 		fmt.Sprintf("Critical error in %s", s.Application),
@@ -61,7 +62,7 @@ func (s *ServerConfig) Fatal(t string) {
 			{
 				"fallback" : fmt.Sprintf("Critical error in %s (%s)", s.Application, s.Environment),
 				"color" : "#ff3232",
-				"text" : s.Print(t),
+				"text" : s.Print(f, t),
 			},
 		},
 	)
@@ -69,7 +70,7 @@ func (s *ServerConfig) Fatal(t string) {
 	log.Fatal(t)
 }
 
-func (s *ServerConfig) Fatalf(t string, par ...interface{}) {
+func (s *ServerConfig) Fatalf(f string, t string, par ...interface{}) {
 	_, _ = slack.Send(
 		s.Webhook,
 		fmt.Sprintf("Critical error in %s", s.Application),
@@ -78,7 +79,7 @@ func (s *ServerConfig) Fatalf(t string, par ...interface{}) {
 			{
 				"fallback" : fmt.Sprintf("Critical error in %s (%s)", s.Application, s.Environment),
 				"color" : "#ff3232",
-				"text" : s.Print(fmt.Sprintf(t, par...)),
+				"text" : s.Print(f, fmt.Sprintf(t, par...)),
 			},
 		},
 	)
