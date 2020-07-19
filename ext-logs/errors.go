@@ -24,13 +24,12 @@ func (s *ServerConfig) Print() string {
 func (s *ServerConfig) Error(t string) {
 	_, _ = slack.Send(
 		s.Webhook,
-		fmt.Sprintf("*Unexpected error* on %s", s.Application),
+		fmt.Sprintf("Unexpected error in %s", s.Application),
 		nil,
 		[]map[string]interface{}{
 			{
 				"fallback" : fmt.Sprintf("Unexpected error in %s (%s)", s.Application, s.Environment),
 				"color" : "#FF9300",
-				"author_name" : s.Application,
 				"title" : t,
 				"text" : s.Print(),
 			},
@@ -41,13 +40,12 @@ func (s *ServerConfig) Error(t string) {
 func (s *ServerConfig) Errorf(t string, par ...interface{}) {
 	_, _ = slack.Send(
 		s.Webhook,
-		fmt.Sprintf("*Unexpected error* on %s", s.Application),
+		fmt.Sprintf("Unexpected error in %s", s.Application),
 		nil,
 		[]map[string]interface{}{
 			{
 				"fallback" : fmt.Sprintf("Unexpected error in %s (%s)", s.Application, s.Environment),
 				"color" : "#FF9300",
-				"author_name" : s.Application,
 				"title" : fmt.Sprintf(t, par...),
 				"text" : s.Print(),
 			},
@@ -58,13 +56,12 @@ func (s *ServerConfig) Errorf(t string, par ...interface{}) {
 func (s *ServerConfig) Fatal(t string) {
 	_, _ = slack.Send(
 		s.Webhook,
-		fmt.Sprintf("*Crash* on %s", s.Application),
+		fmt.Sprintf("Critical error in %s", s.Application),
 		nil,
 		[]map[string]interface{}{
 			{
 				"fallback" : fmt.Sprintf("Critical error in %s (%s)", s.Application, s.Environment),
 				"color" : "#ff3232",
-				"author_name" : s.Application,
 				"title" : t,
 				"text" : s.Print(),
 			},
@@ -77,13 +74,12 @@ func (s *ServerConfig) Fatal(t string) {
 func (s *ServerConfig) Fatalf(t string, par ...interface{}) {
 	_, _ = slack.Send(
 		s.Webhook,
-		fmt.Sprintf("*Crash* on %s", s.Application),
+		fmt.Sprintf("Critical error in %s", s.Application),
 		nil,
 		[]map[string]interface{}{
 			{
 				"fallback" : fmt.Sprintf("Critical error in %s (%s)", s.Application, s.Environment),
 				"color" : "#ff3232",
-				"author_name" : s.Application,
 				"title" : fmt.Sprintf(t, par...),
 				"text" : s.Print(),
 			},
