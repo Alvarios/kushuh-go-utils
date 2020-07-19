@@ -13,9 +13,10 @@ type ServerConfig struct {
 	Environment string
 }
 
-func (s *ServerConfig) Print() string {
+func (s *ServerConfig) Print(t string) string {
 	return fmt.Sprintf(
-		"*Environment*\n%s\n*Noticed*\n%s",
+		"%s\n*Environment*\n%s\n*Noticed*\n%s",
+		t,
 		s.Environment,
 		time.Now().Format("2006-01-02 3:4:5"),
 	)
@@ -30,8 +31,7 @@ func (s *ServerConfig) Error(t string) {
 			{
 				"fallback" : fmt.Sprintf("Unexpected error in %s (%s)", s.Application, s.Environment),
 				"color" : "#FF9300",
-				"title" : t,
-				"text" : s.Print(),
+				"text" : s.Print(t),
 			},
 		},
 	)
@@ -46,8 +46,7 @@ func (s *ServerConfig) Errorf(t string, par ...interface{}) {
 			{
 				"fallback" : fmt.Sprintf("Unexpected error in %s (%s)", s.Application, s.Environment),
 				"color" : "#FF9300",
-				"title" : fmt.Sprintf(t, par...),
-				"text" : s.Print(),
+				"text" : s.Print(fmt.Sprintf(t, par...)),
 			},
 		},
 	)
@@ -62,8 +61,7 @@ func (s *ServerConfig) Fatal(t string) {
 			{
 				"fallback" : fmt.Sprintf("Critical error in %s (%s)", s.Application, s.Environment),
 				"color" : "#ff3232",
-				"title" : t,
-				"text" : s.Print(),
+				"text" : s.Print(t),
 			},
 		},
 	)
@@ -80,8 +78,7 @@ func (s *ServerConfig) Fatalf(t string, par ...interface{}) {
 			{
 				"fallback" : fmt.Sprintf("Critical error in %s (%s)", s.Application, s.Environment),
 				"color" : "#ff3232",
-				"title" : fmt.Sprintf(t, par...),
-				"text" : s.Print(),
+				"text" : s.Print(fmt.Sprintf(t, par...)),
 			},
 		},
 	)
