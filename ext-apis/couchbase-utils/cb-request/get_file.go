@@ -12,25 +12,27 @@ type CbFile struct {
 	Collection *gocb.Collection
 	ID string
 	OutputPtr interface{}
-	ExtLog extLogs.Params
 	ErrorHandler func(c *CbFile, err error) error
 	FatalHandler func(c *CbFile, err error) error
 }
 
-func DefaultErrorHandler (c *CbFile, err error) error {
-	c.ExtLog.Context.AbortWithStatusJSON(
-		http.StatusNotFound,
-		gin.H{"message" : err.Error()},
-	)
+func DefaultErrorHandler (log extLogs.Params) func (c *CbFile, err error) error {
+	return func (c *CbFile, err error) error {
+		log.Context.AbortWithStatusJSON(
+			http.StatusNotFound,
+			gin.H{"message" : err.Error()},
+		)
 
-	return err
+		return err
+	}
 }
 
-func DefaultFatalHandler (c *CbFile, err error) error {
-	c.ExtLog.Error = err
-	extLogs.UnexpectedCouchbaseAbort(c.ExtLog)
-
-	return err
+func DefaultFatalHandler (log extLogs.Params) func (c *CbFile, err error) error {
+	return func (c *CbFile, err error) error {
+		log.Error = err
+		extLogs.UnexpectedCouchbaseAbort(log)
+		return err
+	}
 }
 
 func (f *CbFile) Fetch() error {
