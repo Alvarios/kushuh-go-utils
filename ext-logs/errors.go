@@ -38,21 +38,6 @@ func (s *ServerConfig) Error(f string, t string) {
 	)
 }
 
-func (s *ServerConfig) Errorf(f string, t string, par ...interface{}) {
-	_, _ = slack.Send(
-		s.Webhook,
-		fmt.Sprintf("Unexpected error in %s", s.Application),
-		nil,
-		[]map[string]interface{}{
-			{
-				"fallback" : fmt.Sprintf("Unexpected error in %s (%s)", s.Application, s.Environment),
-				"color" : "#FF9300",
-				"text" : s.Print(f, fmt.Sprintf(t, par...)),
-			},
-		},
-	)
-}
-
 func (s *ServerConfig) Fatal(f string, t string) {
 	_, _ = slack.Send(
 		s.Webhook,
@@ -68,21 +53,4 @@ func (s *ServerConfig) Fatal(f string, t string) {
 	)
 
 	log.Fatal(t)
-}
-
-func (s *ServerConfig) Fatalf(f string, t string, par ...interface{}) {
-	_, _ = slack.Send(
-		s.Webhook,
-		fmt.Sprintf("Critical error in %s", s.Application),
-		nil,
-		[]map[string]interface{}{
-			{
-				"fallback" : fmt.Sprintf("Critical error in %s (%s)", s.Application, s.Environment),
-				"color" : "#ff3232",
-				"text" : s.Print(f, fmt.Sprintf(t, par...)),
-			},
-		},
-	)
-
-	log.Fatalf(t, par...)
 }

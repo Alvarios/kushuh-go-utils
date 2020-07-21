@@ -2,7 +2,7 @@
 
 ## Upsert
 
-Opens a file, and create it if it doesn't exist already. If path is incomplete
+Open a file, and create it if it doesn't exist already. If path is incomplete
 (intermediate folders are missing), they will also be created automatically.
 
 ```go
@@ -36,7 +36,7 @@ Returns the absolute path for the root of a project. It assumes
 the project folder has an unique name in the entire project tree.
 
 ```go
-path, err := file_utils.FindProjectRoot(rootFolderName)
+path, err := fileUtils.FindProjectRoot(rootFolderName)
 ```
 
 ## Copyright

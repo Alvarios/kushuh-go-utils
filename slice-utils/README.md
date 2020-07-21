@@ -14,6 +14,6 @@ isEqual := sliceUtils.Compare(slice1, slice2) // return true
 
 isEqual = sliceUtils.Compare(slice1, slice3) // return false
 ```
-
 ## Copyright
-2020 Kushuh - [MIT license](https://github.com/Alvarios/kushuh-go-utils/blob/master/LICENSE)
+2020 Kushuh - [MIT license](htt
+ps://github.com/Alvarios/kushuh-go-utils/blob/master/LICENSE)
