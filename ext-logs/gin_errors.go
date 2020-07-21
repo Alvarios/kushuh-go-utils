@@ -2,7 +2,7 @@ package extLogs
 
 import (
 	"fmt"
-	cbErrors "github.com/Alvarios/kushuh-go-utils/ext-apis/couchbase/cb-errors"
+	cbErrors "github.com/Alvarios/kushuh-go-utils/ext-apis/couchbase-utils/cb-errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
