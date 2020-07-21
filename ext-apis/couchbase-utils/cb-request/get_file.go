@@ -8,10 +8,10 @@ import (
 	"net/http"
 )
 
-func GetFile(c *gocb.Collection, k string, o interface{}, p extLogs.Params, na bool) error {
+func GetFile(c *gocb.Collection, k string, o interface{}, p extLogs.Params, permissive bool) error {
 	post, err := c.Get(k, nil)
 
-	if err != nil && !na {
+	if err != nil && !permissive {
 		if err == gocb.ErrDocumentNotFound || err == gocb.ErrPathNotFound {
 			p.Context.AbortWithStatusJSON(
 				http.StatusNotFound,
@@ -22,6 +22,7 @@ func GetFile(c *gocb.Collection, k string, o interface{}, p extLogs.Params, na b
 		}
 
 		p.Reason = "unable to fetch document with id " + k
+		p.Error = err
 		extLogs.UnexpectedCouchbaseAbort(p)
 
 		return nil
@@ -32,12 +33,11 @@ func GetFile(c *gocb.Collection, k string, o interface{}, p extLogs.Params, na b
 	err = post.Content(o)
 
 	// Handle error in case request has an unexpected structure.
-	if err != nil && !na {
+	if err != nil && !permissive {
 		// Cannot expect to have wrong structure. This is a critical error.
 		p.Reason = "unexpected document structure for id " + k
+		p.Error = err
 		extLogs.UnexpectedCouchbaseAbort(p)
-
-		return err
 	}
 
 	return err
