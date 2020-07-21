@@ -5,6 +5,7 @@
 Send a post request from go, in `application/json` format.
 
 ```go
+// payload is a map[string]interface{}
 res, err := httpUtils.Post(url, payload)
 ```
 
@@ -20,7 +21,8 @@ files := []httpUtils.File{
     }
 }
 
-res, err := httpUtils.PostForm(url, data, files)
+// payload is a map[string]interface{}
+res, err := httpUtils.PostForm(url, payload, files)
 ```
 
 ## Copyright
