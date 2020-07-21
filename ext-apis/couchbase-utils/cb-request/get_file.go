@@ -8,37 +8,65 @@ import (
 	"net/http"
 )
 
-func GetFile(c *gocb.Collection, k string, o interface{}, p extLogs.Params, permissive bool) error {
-	post, err := c.Get(k, nil)
+type CbFile struct {
+	Collection *gocb.Collection
+	ID string
+	OutputPtr interface{}
+	ExtLog extLogs.Params
+	ErrorHandler func(c *CbFile, err error) error
+	FatalHandler func(c *CbFile, err error) error
+}
 
-	if err != nil && !permissive {
-		if err == gocb.ErrDocumentNotFound || err == gocb.ErrPathNotFound {
-			p.Context.AbortWithStatusJSON(
-				http.StatusNotFound,
-				gin.H{"message" : fmt.Sprintf("unable to find document with id %s", k)},
-			)
+func DefaultErrorHandler (c *CbFile, err error) error {
+	c.ExtLog.Context.AbortWithStatusJSON(
+		http.StatusNotFound,
+		gin.H{"message" : err.Error()},
+	)
 
-			return nil
+	return err
+}
+
+func DefaultFatalHandler (c *CbFile, err error) error {
+	c.ExtLog.Error = err
+	extLogs.UnexpectedCouchbaseAbort(c.ExtLog)
+
+	return err
+}
+
+func (f *CbFile) Fetch() error {
+	post, err := f.Collection.Get(f.ID, nil)
+
+	if err != nil && (err == gocb.ErrDocumentNotFound || err == gocb.ErrPathNotFound) {
+		err = fmt.Errorf("unable to find document with id %s : %s", f.ID, err.Error())
+
+		if f.ErrorHandler != nil {
+			nerr := f.ErrorHandler(f, err)
+			return nerr
 		}
 
-		p.Reason = "unable to fetch document with id " + k
-		p.Error = err
-		extLogs.UnexpectedCouchbaseAbort(p)
-
-		return nil
-	} else if err != nil {
 		return err
 	}
 
-	err = post.Content(o)
+	if err != nil {
+		err = fmt.Errorf("unable to fetch document with id %s : %s", f.ID, err.Error())
 
-	// Handle error in case request has an unexpected structure.
-	if err != nil && !permissive {
-		// Cannot expect to have wrong structure. This is a critical error.
-		p.Reason = "unexpected document structure for id " + k
-		p.Error = err
-		extLogs.UnexpectedCouchbaseAbort(p)
+		if f.FatalHandler != nil {
+			nerr := f.FatalHandler(f, err)
+			return nerr
+		}
+
+		return err
+	}
+
+	err = post.Content(f.OutputPtr)
+
+	if err != nil && f.FatalHandler != nil {
+		err = fmt.Errorf("\"unexpected document structure for id %s : %s", f.ID, err.Error())
+
+		nerr := f.FatalHandler(f, err)
+		return nerr
 	}
 
 	return err
 }
+
